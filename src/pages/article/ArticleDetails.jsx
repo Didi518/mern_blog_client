@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 
-import SuggestedPosts from "./container/SuggestedPosts";
-import BreadCrumbs from "../../components/BreadCrumbs";
-import MainLayout from "../../components/MainLayout";
 import { images } from "../../constants";
+import BreadCrumbs from "../../components/BreadCrumbs";
+import CommentsContainer from "../../components/comments/CommentsContainer";
+import MainLayout from "../../components/MainLayout";
+import SuggestedPosts from "./container/SuggestedPosts";
 
 const breadCrumbsData = [
   {
@@ -89,6 +90,7 @@ const ArticleDetails = () => {
               consectetur modi.
             </p>
           </div>
+          <CommentsContainer className="mt-10" logginedUserId="a" />
         </article>
         <SuggestedPosts
           header="Derniers articles"
