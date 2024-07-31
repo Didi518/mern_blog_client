@@ -4,6 +4,7 @@ import { images } from "../../constants";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import CommentsContainer from "../../components/comments/CommentsContainer";
 import MainLayout from "../../components/MainLayout";
+import SocialShareButton from "../../components/SocialShareButton";
 import SuggestedPosts from "./container/SuggestedPosts";
 
 const breadCrumbsData = [
@@ -92,12 +93,23 @@ const ArticleDetails = () => {
           </div>
           <CommentsContainer className="mt-10" logginedUserId="a" />
         </article>
-        <SuggestedPosts
-          header="Derniers articles"
-          posts={postsData}
-          tags={tagsData}
-          className="mt-8 lg:mt-0 lg:max-w-xs"
-        />
+        <div>
+          <SuggestedPosts
+            header="Derniers articles"
+            posts={postsData}
+            tags={tagsData}
+            className="mt-8 lg:mt-0 lg:max-w-xs"
+          />
+          <div className="mt-7">
+            <h2 className="font-roboto font-medium text-dark-hard mb-4 md:text-xl">
+              Partagez sur:
+            </h2>
+            <SocialShareButton
+              url={encodeURI("https://kevflix-mu.vercel.app/")}
+              title={encodeURIComponent("Alice in Borderland 2020")}
+            />
+          </div>
+        </div>
       </section>
     </MainLayout>
   );
