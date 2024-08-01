@@ -1,18 +1,60 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { HiOutlineCamera } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { userActions } from "../store/reducers/userReducers";
+import { updateProfilePicture } from "../services/index/users";
 import { stables } from "../constants";
 import CropEasy from "./crop/CropEasy";
 
 const ProfilePicture = ({ avatar }) => {
   const [openCrop, setOpenCrop] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const userState = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: ({ token, formData }) => {
+      return updateProfilePicture({
+        token: token,
+        formData: formData,
+      });
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      setOpenCrop(false);
+      localStorage.setItem("compte", JSON.stringify(data));
+      queryClient.invalidateQueries(["profile"]);
+      toast.success("La photo de profil a bien été supprimée");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.error(error);
+    },
+  });
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setPhoto({ url: URL.createObjectURL(file), file });
     setOpenCrop(true);
+  };
+
+  const handleDeleteImage = () => {
+    if (window.confirm("Voulez-vous supprimer l'image de profil?")) {
+      try {
+        const formData = new FormData();
+        formData.append("profilePicture", undefined);
+
+        mutate({ token: userState.userInfo.token, formData: formData });
+      } catch (error) {
+        toast.error(error.message);
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -48,6 +90,7 @@ const ProfilePicture = ({ avatar }) => {
           />
         </div>
         <button
+          onClick={handleDeleteImage}
           className="border border-red-500 rounded-lg px-4 py-2 text-red-500"
           type="button"
         >
