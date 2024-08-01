@@ -5,6 +5,7 @@ import "./App.css";
 import ArticleDetails from "./pages/article/ArticleDetails";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 import RegisterPage from "./pages/register/RegisterPage";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/blog/:id" element={<ArticleDetails />} />
         <Route path="/inscription" element={<RegisterPage />} />
         <Route path="/connexion" element={<LoginPage />} />
+        <Route path="/profil" element={<ProfilePage />} />
       </Routes>
       <Toaster />
     </div>
