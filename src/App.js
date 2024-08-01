@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
 import "./App.css";
-import HomePage from "./pages/home/HomePage";
 import ArticleDetails from "./pages/article/ArticleDetails";
+import HomePage from "./pages/home/HomePage";
+import RegisterPage from "./pages/register/RegisterPage";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route index path="/" element={<HomePage />} />
         <Route path="/blog/:id" element={<ArticleDetails />} />
+        <Route path="/inscription" element={<RegisterPage />} />
       </Routes>
     </div>
   );
