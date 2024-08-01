@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getUserProfile } from "../../services/index/users";
+import { userActions } from "../../store/reducers/userReducers";
+import { getUserProfile, updateProfile } from "../../services/index/users";
 import MainLayout from "../../components/MainLayout";
 import ProfilePicture from "../../components/ProfilePicture";
 
@@ -12,6 +14,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     data: profileData,
@@ -22,6 +25,25 @@ const ProfilePage = () => {
       return getUserProfile({ token: userState.userInfo.token });
     },
     queryKey: ["profile"],
+  });
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: ({ name, email, password }) => {
+      return updateProfile({
+        token: userState.userInfo.token,
+        userData: { name, email, password },
+      });
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      localStorage.setItem("compte", JSON.stringify(data));
+      queryClient.invalidateQueries(["profile"]);
+      toast.success("Le profil a bien été mis à jour");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.error(error);
+    },
   });
 
   useEffect(() => {
@@ -47,7 +69,10 @@ const ProfilePage = () => {
     mode: "onChange",
   });
 
-  const submitHandler = (data) => {};
+  const submitHandler = (data) => {
+    const { name, email, password } = data;
+    mutate({ name, email, password });
+  };
 
   return (
     <MainLayout>
@@ -124,22 +149,13 @@ const ProfilePage = () => {
                 htmlFor="password"
                 className="text-[#5a7184] font-semibold block"
               >
-                Mot de passe
+                Nouveau mot de passe (optionnel)
               </label>
               <input
                 type="password"
                 id="password"
-                {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Le mot de passe est requis",
-                  },
-                  minLength: {
-                    value: 6,
-                    message: "Le mot de passe doit faire au moins 6 caractères",
-                  },
-                })}
-                placeholder="Entrez votre mot de passe"
+                {...register("password")}
+                placeholder="Entrez le nouveau mot de passe"
                 className={`placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none bg-transparent border ${
                   errors.password ? "border-red-500" : "border-[#c3cad9]"
                 }`}
@@ -155,7 +171,7 @@ const ProfilePage = () => {
               disabled={!isValid || profileIsLoading}
               className="bg-primary text-white font-bold text-lg py-4 px-8 w-full rounded-lg mb-6 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Inscription
+              Mettre à jour
             </button>
           </form>
         </div>
