@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -58,10 +58,12 @@ const ProfilePage = () => {
       email: "",
       password: "",
     },
-    values: {
-      name: profileIsLoading ? "" : profileData.name,
-      email: profileIsLoading ? "" : profileData.email,
-    },
+    values: useMemo(() => {
+      return {
+        name: profileIsLoading ? "" : profileData.name,
+        email: profileIsLoading ? "" : profileData.email,
+      };
+    }, [profileData?.email, profileData?.name, profileIsLoading]),
     mode: "onChange",
   });
 
