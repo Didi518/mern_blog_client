@@ -2,9 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import "./App.css";
+import Admin from "./pages/admin/screens/Admin";
+import AdminLayout from "./pages/admin/AdminLayout";
 import ArticleDetailsPage from "./pages/article/ArticleDetailsPage";
+import Comments from "./pages/admin/screens/comments/Comments";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
+import ManagePosts from "./pages/admin/screens/posts/ManagePosts";
+import NewPost from "./pages/admin/screens/posts/NewPost";
 import ProfilePage from "./pages/profile/ProfilePage";
 import RegisterPage from "./pages/register/RegisterPage";
 
@@ -17,6 +22,12 @@ function App() {
         <Route path="/inscription" element={<RegisterPage />} />
         <Route path="/connexion" element={<LoginPage />} />
         <Route path="/profil" element={<ProfilePage />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Admin />} />
+          <Route path="commentaires" element={<Comments />} />
+          <Route path="articles/nouveau" element={<NewPost />} />
+          <Route path="articles/gestion" element={<ManagePosts />} />
+        </Route>
       </Routes>
       <Toaster />
     </div>
