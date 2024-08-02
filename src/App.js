@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import "./App.css";
-import ArticleDetails from "./pages/article/ArticleDetails";
+import ArticleDetailsPage from "./pages/article/ArticleDetailsPage";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
 import ProfilePage from "./pages/profile/ProfilePage";
@@ -13,7 +13,7 @@ function App() {
     <div className="App font-opensans">
       <Routes>
         <Route index path="/" element={<HomePage />} />
-        <Route path="/blog/:slug" element={<ArticleDetails />} />
+        <Route path="/blog/:slug" element={<ArticleDetailsPage />} />
         <Route path="/inscription" element={<RegisterPage />} />
         <Route path="/connexion" element={<LoginPage />} />
         <Route path="/profil" element={<ProfilePage />} />

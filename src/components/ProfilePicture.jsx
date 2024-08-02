@@ -17,7 +17,7 @@ const ProfilePicture = ({ avatar }) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ token, formData }) => {
       return updateProfilePicture({
         token: token,

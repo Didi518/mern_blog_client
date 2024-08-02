@@ -16,11 +16,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const {
-    data: profileData,
-    isLoading: profileIsLoading,
-    error: profileError,
-  } = useQuery({
+  const { data: profileData, isLoading: profileIsLoading } = useQuery({
     queryFn: () => {
       return getUserProfile({ token: userState.userInfo.token });
     },

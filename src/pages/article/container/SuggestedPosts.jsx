@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { images } from "../../../constants";
+import { images, stables } from "../../../constants";
 
 const SuggestedPosts = ({ className, header, posts = [], tags }) => {
   return (
@@ -17,13 +17,13 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
             className="flex space-x-3 flex-nowrap items-center"
           >
             <img
-              src={images.Post1Image}
+              src={item?.image ? stables + item?.image : images.samplePostImage}
               alt={item.title}
               className="aspect-square object-cover rounded-lg w-1/5"
             />
             <div className="text-sm font-roboto text-dark-hard font-medium">
               <h3 className="text-sm font-roboto text-dark-hard font-medium md:text-base lg:text-lg">
-                {item.title}
+                <Link to={`/blog/${item.slug}`}>{item.title}</Link>
               </h3>
               <span className="text-xs opacity-60">
                 {new Date(item.createdAt).toLocaleDateString("fr-FR", {
@@ -39,17 +39,21 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
       <h2 className="font-roboto font-medium text-dark-hard mt-8 md:text-xl">
         Tags
       </h2>
-      <div className="flex flex-wrap gap-x-2 gap-y-2 mt-4">
-        {tags.map((item) => (
-          <Link
-            key={item}
-            to="/"
-            className="inline-block rounded-md px-3 py-1.5 bg-primary font-roboto text-xs text-white md:text-sm"
-          >
-            {item}
-          </Link>
-        ))}
-      </div>
+      {tags.length === 0 ? (
+        <p className="text-slate-500 text-xs mt-2">Aucun tag pour ce post</p>
+      ) : (
+        <div className="flex flex-wrap gap-x-2 gap-y-2 mt-4">
+          {tags.map((item) => (
+            <Link
+              key={item}
+              to="/"
+              className="inline-block rounded-md px-3 py-1.5 bg-primary font-roboto text-xs text-white md:text-sm"
+            >
+              {item}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

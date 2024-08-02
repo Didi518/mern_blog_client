@@ -10,7 +10,7 @@ import Italic from "@tiptap/extension-italic";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 
-import { getSinglePost } from "../../services/index/posts";
+import { getAllPosts, getSinglePost } from "../../services/index/posts";
 import { images, stables } from "../../constants";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import CommentsContainer from "../../components/comments/CommentsContainer";
@@ -20,44 +20,7 @@ import SuggestedPosts from "./container/SuggestedPosts";
 import ErrorMessage from "../../components/ErrorMessage";
 import ArticleDetailSkeleton from "./components/ArticleDetailsSkeleton";
 
-const postsData = [
-  {
-    _id: "1",
-    image: images.Post1Image,
-    title: "Aidons nos enfants pour une meilleure éducation",
-    createdAt: "2023-01-28T15:35:53.607+0000",
-  },
-  {
-    _id: "2",
-    image: images.Post1Image,
-    title: "Aidons nos enfants pour une meilleure éducation",
-    createdAt: "2023-01-28T15:35:53.607+0000",
-  },
-  {
-    _id: "3",
-    image: images.Post1Image,
-    title: "Aidons nos enfants pour une meilleure éducation",
-    createdAt: "2023-01-28T15:35:53.607+0000",
-  },
-  {
-    _id: "4",
-    image: images.Post1Image,
-    title: "Aidons nos enfants pour une meilleure éducation",
-    createdAt: "2023-01-28T15:35:53.607+0000",
-  },
-];
-
-const tagsData = [
-  "Médecine",
-  "Mode de vie",
-  "Apprentissage",
-  "Santé",
-  "Nourriture",
-  "Diététique",
-  "Education",
-];
-
-const ArticleDetails = () => {
+const ArticleDetailsPage = () => {
   const { slug } = useParams();
   const [breadCrumbsData, setBreadCrumbsData] = useState([]);
   const [body, setBody] = useState(null);
@@ -66,6 +29,11 @@ const ArticleDetails = () => {
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
     queryKey: ["blog", slug],
+  });
+
+  const { data: postsData } = useQuery({
+    queryFn: () => getAllPosts(),
+    queryKey: ["posts"],
   });
 
   useEffect(() => {
@@ -127,7 +95,7 @@ const ArticleDetails = () => {
             <SuggestedPosts
               header="Derniers articles"
               posts={postsData}
-              tags={tagsData}
+              tags={data?.tags}
               className="mt-8 lg:mt-0 lg:max-w-xs"
             />
             <div className="mt-7">
@@ -135,8 +103,8 @@ const ArticleDetails = () => {
                 Partagez sur:
               </h2>
               <SocialShareButton
-                url={encodeURI("https://kevflix-mu.vercel.app/")}
-                title={encodeURIComponent("Alice in Borderland 2020")}
+                url={encodeURI(window.location.href)}
+                title={encodeURIComponent(data?.title)}
               />
             </div>
           </div>
@@ -146,4 +114,4 @@ const ArticleDetails = () => {
   );
 };
 
-export default ArticleDetails;
+export default ArticleDetailsPage;
