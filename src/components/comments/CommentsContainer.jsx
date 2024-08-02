@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createNewComment } from "../../services/index/comments";
+import { createNewComment, updateComment } from "../../services/index/comments";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 
@@ -15,6 +15,7 @@ const CommentsContainer = ({
 }) => {
   const [affectedComment, setAffectedComment] = useState(null);
   const userState = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
   const { mutate: mutateNewComment, isLoading: isLoadingNewComment } =
     useMutation({
@@ -23,7 +24,7 @@ const CommentsContainer = ({
       },
       onSuccess: () => {
         toast.success(
-          "Votre commentaire a bien été envoyé, il sera visible après la validation d'un administrateur"
+          "Votre commentaire est bien envoyé, il sera visible après la validation d'un admin"
         );
       },
       onError: (error) => {
@@ -31,6 +32,20 @@ const CommentsContainer = ({
         console.error(error);
       },
     });
+
+  const { mutate: mutateUpdateComment } = useMutation({
+    mutationFn: ({ token, desc, commentId }) => {
+      return updateComment({ token, desc, commentId });
+    },
+    onSuccess: () => {
+      toast.success("Votre commentaire a bien été modifié");
+      queryClient.invalidateQueries(["blog", postSlug]);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.error(error);
+    },
+  });
 
   const addCommentHandler = (value, parent = null, replyOnUser = null) => {
     mutateNewComment({
@@ -44,6 +59,11 @@ const CommentsContainer = ({
   };
 
   const updateCommentHandler = (value, commentId) => {
+    mutateUpdateComment({
+      token: userState.userInfo.token,
+      desc: value,
+      commentId,
+    });
     setAffectedComment(null);
   };
 
