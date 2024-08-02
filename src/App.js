@@ -13,7 +13,7 @@ function App() {
     <div className="App font-opensans">
       <Routes>
         <Route index path="/" element={<HomePage />} />
-        <Route path="/blog/:id" element={<ArticleDetails />} />
+        <Route path="/blog/:slug" element={<ArticleDetails />} />
         <Route path="/inscription" element={<RegisterPage />} />
         <Route path="/connexion" element={<LoginPage />} />
         <Route path="/profil" element={<ProfilePage />} />
