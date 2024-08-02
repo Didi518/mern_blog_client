@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
@@ -60,6 +61,7 @@ const ArticleDetails = () => {
   const { slug } = useParams();
   const [breadCrumbsData, setBreadCrumbsData] = useState([]);
   const [body, setBody] = useState(null);
+  const userState = useSelector((state) => state.user);
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
@@ -114,7 +116,11 @@ const ArticleDetails = () => {
               {data?.title}
             </h1>
             <div className="mt-4 prose prose-sm sm:prose-base">{body}</div>
-            <CommentsContainer className="mt-10" logginedUserId="a" />
+            <CommentsContainer
+              comments={data?.comments}
+              className="mt-10"
+              logginedUserId={userState?.userInfo?._id}
+            />
           </article>
           <div>
             <SuggestedPosts
