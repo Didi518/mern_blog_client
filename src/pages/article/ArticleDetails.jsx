@@ -16,6 +16,8 @@ import CommentsContainer from "../../components/comments/CommentsContainer";
 import MainLayout from "../../components/MainLayout";
 import SocialShareButton from "../../components/SocialShareButton";
 import SuggestedPosts from "./container/SuggestedPosts";
+import ErrorMessage from "../../components/ErrorMessage";
+import ArticleDetailSkeleton from "./components/ArticleDetailsSkeleton";
 
 const postsData = [
   {
@@ -59,7 +61,7 @@ const ArticleDetails = () => {
   const [breadCrumbsData, setBreadCrumbsData] = useState([]);
   const [body, setBody] = useState(null);
 
-  const { data } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
     queryKey: ["blog", slug],
   });
@@ -81,52 +83,58 @@ const ArticleDetails = () => {
 
   return (
     <MainLayout>
-      <section className="container mx-auto max-w-5xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start">
-        <article className="flex-1">
-          <BreadCrumbs data={breadCrumbsData} />
-          <img
-            src={
-              data?.photo
-                ? stables.UPLOAD_FOLDER_BASE_URL + data?.photo
-                : images.samplePostImage
-            }
-            alt={data?.title}
-            className="rounded-xl w-full"
-          />
-          <div className="mt-4 flex gap-2">
-            {data?.categories.map((category) => (
-              <Link
-                to={`/blog?categorie=${category.name}`}
-                className="text-primary text-sm font-roboto inline-block md:text-base"
-              >
-                {category.name}
-              </Link>
-            ))}
-          </div>
-          <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
-            {data?.title}
-          </h1>
-          <div className="mt-4 prose prose-sm sm:prose-base">{body}</div>
-          <CommentsContainer className="mt-10" logginedUserId="a" />
-        </article>
-        <div>
-          <SuggestedPosts
-            header="Derniers articles"
-            posts={postsData}
-            tags={tagsData}
-            className="mt-8 lg:mt-0 lg:max-w-xs"
-          />
-          <div className="mt-7">
-            <h2 className="font-roboto font-medium text-dark-hard mb-4 md:text-xl">
-              Partagez sur:
-            </h2>
-            <SocialShareButton
-              url={encodeURI("https://kevflix-mu.vercel.app/")}
-              title={encodeURIComponent("Alice in Borderland 2020")}
+      {isLoading ? (
+        <ArticleDetailSkeleton />
+      ) : isError ? (
+        <ErrorMessage message="Echec de la récupération des détails du post" />
+      ) : (
+        <section className="container mx-auto max-w-5xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start">
+          <article className="flex-1">
+            <BreadCrumbs data={breadCrumbsData} />
+            <img
+              src={
+                data?.photo
+                  ? stables.UPLOAD_FOLDER_BASE_URL + data?.photo
+                  : images.samplePostImage
+              }
+              alt={data?.title}
+              className="rounded-xl w-full"
             />
+            <div className="mt-4 flex gap-2">
+              {data?.categories.map((category) => (
+                <Link
+                  to={`/blog?categorie=${category.name}`}
+                  className="text-primary text-sm font-roboto inline-block md:text-base"
+                >
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+            <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
+              {data?.title}
+            </h1>
+            <div className="mt-4 prose prose-sm sm:prose-base">{body}</div>
+            <CommentsContainer className="mt-10" logginedUserId="a" />
+          </article>
+          <div>
+            <SuggestedPosts
+              header="Derniers articles"
+              posts={postsData}
+              tags={tagsData}
+              className="mt-8 lg:mt-0 lg:max-w-xs"
+            />
+            <div className="mt-7">
+              <h2 className="font-roboto font-medium text-dark-hard mb-4 md:text-xl">
+                Partagez sur:
+              </h2>
+              <SocialShareButton
+                url={encodeURI("https://kevflix-mu.vercel.app/")}
+                title={encodeURIComponent("Alice in Borderland 2020")}
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </MainLayout>
   );
 };
