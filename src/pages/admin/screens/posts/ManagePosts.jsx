@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getAllPosts } from "../../../../services/index/posts";
+import { deletePost, getAllPosts } from "../../../../services/index/posts";
 import { images, stables } from "../../../../constants";
 import Pagination from "../../../../components/Pagination";
 
@@ -10,6 +13,8 @@ let isFirstRun = true;
 const ManagePosts = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const userState = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
   const {
     data: postsData,
@@ -20,6 +25,24 @@ const ManagePosts = () => {
     queryFn: () => getAllPosts(searchKeyword, currentPage),
     queryKey: ["posts"],
   });
+
+  const { mutate: mutateDeletePost, isLoading: isLoadingDeletePost } =
+    useMutation({
+      mutationFn: ({ slug, token }) => {
+        return deletePost({
+          slug,
+          token,
+        });
+      },
+      onSuccess: (_data) => {
+        queryClient.invalidateQueries(["posts"]);
+        toast.success("L'article a bien été supprimé'");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.error(error);
+      },
+    });
 
   useEffect(() => {
     if (isFirstRun) {
@@ -38,6 +61,10 @@ const ManagePosts = () => {
     e.preventDefault();
     setCurrentPage(1);
     refetch();
+  };
+
+  const deletePostHandler = ({ slug, token }) => {
+    mutateDeletePost({ slug, token });
   };
 
   return (
@@ -113,6 +140,12 @@ const ManagePosts = () => {
                         Chargement...
                       </td>
                     </tr>
+                  ) : postsData?.data?.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="text-center py-10 w-full">
+                        Aucun article trouvé
+                      </td>
+                    </tr>
                   ) : (
                     postsData?.data.map((post) => (
                       <tr key={post._id}>
@@ -170,13 +203,26 @@ const ManagePosts = () => {
                               : "Aucun tag"}
                           </div>
                         </td>
-                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                          <a
-                            href="/"
-                            className="text-indigo-600 hover:text-indigo-900"
+                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 space-x-5">
+                          <Link
+                            to="/"
+                            className="text-green-600 hover:text-green-900"
                           >
                             Editer
-                          </a>
+                          </Link>
+                          <button
+                            disabled={isLoadingDeletePost}
+                            type="button"
+                            className="text-red-600 hover:text-red-900 disabled:opacity-70 disabled:cursor-not-allowed"
+                            onClick={() =>
+                              deletePostHandler({
+                                slug: post?.slug,
+                                token: userState.userInfo.token,
+                              })
+                            }
+                          >
+                            Effacer
+                          </button>
                         </td>
                       </tr>
                     ))
