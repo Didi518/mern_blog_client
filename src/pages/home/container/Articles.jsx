@@ -30,7 +30,7 @@ const Articles = () => {
         ) : isError ? (
           <ErrorMessage message="Echec lors de la récupération des données des posts" />
         ) : (
-          data.map((post) => (
+          data?.data.map((post) => (
             <ArticleCard
               key={post._id}
               post={post}

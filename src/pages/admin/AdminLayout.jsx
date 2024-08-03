@@ -16,7 +16,7 @@ const AdminLayout = () => {
       return getUserProfile({ token: userState.userInfo.token });
     },
     queryKey: ["profile"],
-    onError: (err) => {
+    onError: (_err) => {
       navigate("/");
       toast.error("Permission refusée, réservé aux admins");
     },
