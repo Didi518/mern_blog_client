@@ -5,7 +5,7 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 export const getAllPosts = async (searchKeyword = "", page = 1, limit = 10) => {
   try {
     const { data, headers } = await axios.get(
-      `${serverUrl}/api/v1/posts?recherche=${searchKeyword}&page=${page}&limite=${limit}`
+      `${serverUrl}/api/v1/posts?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`
     );
     return { data, headers };
   } catch (error) {
