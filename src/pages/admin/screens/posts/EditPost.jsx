@@ -6,10 +6,10 @@ import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getSinglePost, updatePost } from "../../../../services/index/posts";
-import parseJsonToHtml from "../../../../utils/parseJsonToHtml";
 import { stables } from "../../../../constants";
 import ArticleDetailSkeleton from "../../../article/components/ArticleDetailsSkeleton";
 import ErrorMessage from "../../../../components/ErrorMessage";
+import Editor from "../../../../components/editor/Editor";
 
 const EditPost = () => {
   const { slug } = useParams();
@@ -48,7 +48,6 @@ const EditPost = () => {
   useEffect(() => {
     if (!isLoading && !isError) {
       setInitialPhoto(data?.photo);
-      setBody(parseJsonToHtml(data?.body));
     }
   }, [data, isError, isLoading]);
 
@@ -76,7 +75,7 @@ const EditPost = () => {
       updatedData.append("postPicture", picture);
     }
 
-    updatedData.append("document", JSON.stringify({}));
+    updatedData.append("document", JSON.stringify({ body }));
 
     mutateUpdatePostDetails({
       updatedData,
@@ -146,7 +145,17 @@ const EditPost = () => {
             <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
               {data?.title}
             </h1>
-            <div className="mt-4 prose prose-sm sm:prose-base">{body}</div>
+            <div className="w-full">
+              {!isLoading && !isError && (
+                <Editor
+                  content={data?.body}
+                  editable={true}
+                  onDataChange={(data) => {
+                    setBody(data);
+                  }}
+                />
+              )}
+            </div>
             <button
               disabled={isLoadingUpdatePostDetails}
               type="button"

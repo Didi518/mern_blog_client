@@ -13,16 +13,25 @@ import SocialShareButton from "../../components/SocialShareButton";
 import SuggestedPosts from "./container/SuggestedPosts";
 import ErrorMessage from "../../components/ErrorMessage";
 import ArticleDetailSkeleton from "./components/ArticleDetailsSkeleton";
+import Editor from "../../components/editor/Editor";
 
 const ArticleDetailsPage = () => {
   const { slug } = useParams();
   const [breadCrumbsData, setBreadCrumbsData] = useState([]);
-  const [body, setBody] = useState(null);
+  const [setBody] = useState(null);
   const userState = useSelector((state) => state.user);
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
     queryKey: ["blog", slug],
+    onSuccess: (data) => {
+      setBreadCrumbsData([
+        { name: "Accueil", link: "/" },
+        { name: "Blog", link: "/blog" },
+        { name: "Article title", link: `/blog/${data.slug}` },
+      ]);
+      setBody(parseJsonToHtml(data?.body));
+    },
   });
 
   const { data: postsData } = useQuery({
@@ -37,7 +46,6 @@ const ArticleDetailsPage = () => {
         { name: "Blog", link: "/blog" },
         { name: data.title, link: `/blog/${data.slug}` },
       ]);
-      setBody(parseJsonToHtml(data?.body));
     }
   }, [data]);
 
@@ -73,7 +81,12 @@ const ArticleDetailsPage = () => {
             <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
               {data?.title}
             </h1>
-            <div className="mt-4 prose prose-sm sm:prose-base">{body}</div>
+
+            <div className="w-full">
+              {!isLoading && !isError && (
+                <Editor content={data?.body} editable={false} />
+              )}
+            </div>
             <CommentsContainer
               comments={data?.comments}
               className="mt-10"
