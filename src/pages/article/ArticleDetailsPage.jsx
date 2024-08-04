@@ -25,11 +25,6 @@ const ArticleDetailsPage = () => {
     queryFn: () => getSinglePost({ slug }),
     queryKey: ["blog", slug],
     onSuccess: (data) => {
-      setBreadCrumbsData([
-        { name: "Accueil", link: "/" },
-        { name: "Blog", link: "/blog" },
-        { name: "Article title", link: `/blog/${data.slug}` },
-      ]);
       setBody(parseJsonToHtml(data?.body));
     },
   });

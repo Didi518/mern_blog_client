@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { HiOutlineCamera } from "react-icons/hi";
-import { Link, useParams } from "react-router-dom";
+import CreatableSelect from "react-select/creatable";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -22,13 +23,22 @@ const promiseOptions = async (inputValue) => {
   return filterCategories(inputValue, categoriesData);
 };
 
+const removeAccents = (str) => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
 const EditPost = () => {
   const { slug } = useParams();
   const [photo, setPhoto] = useState(null);
   const [initialPhoto, setInitialPhoto] = useState(null);
   const [body, setBody] = useState(null);
   const [categories, setCategories] = useState(null);
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState(null);
+  const [postSlug, setPostSlug] = useState(slug);
+  const [caption, setCaption] = useState("");
   const userState = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError } = useQuery({
@@ -47,9 +57,12 @@ const EditPost = () => {
         token,
       });
     },
-    onSuccess: (_data) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries(["blog", slug]);
       toast.success("L'article a bien été mis à jour");
+      navigate(`/admin/articles/gestion/modifier/${data.slug}`, {
+        replace: true,
+      });
     },
     onError: (error) => {
       toast.error(error.message);
@@ -60,7 +73,9 @@ const EditPost = () => {
   useEffect(() => {
     if (!isLoading && !isError) {
       setInitialPhoto(data?.photo);
-      setCategories(data.categories.map((item) => item.value));
+      setCategories(data.categories.map((item) => item._id));
+      setTitle(data.title);
+      setTags(data.tags);
     }
   }, [data, isError, isLoading]);
 
@@ -88,7 +103,10 @@ const EditPost = () => {
       updatedData.append("postPicture", picture);
     }
 
-    updatedData.append("document", JSON.stringify({ body, categories }));
+    updatedData.append(
+      "document",
+      JSON.stringify({ body, categories, title, tags, slug: postSlug, caption })
+    );
 
     mutateUpdatePostDetails({
       updatedData,
@@ -102,6 +120,17 @@ const EditPost = () => {
       setInitialPhoto(null);
       setPhoto(null);
     }
+  };
+
+  const handleSlugChange = (e) => {
+    const value = e.target.value;
+    const slug = removeAccents(value)
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/--+/g, "-");
+
+    setPostSlug(slug);
   };
 
   let isPostDataLoaded = !isLoading && !isError;
@@ -158,10 +187,46 @@ const EditPost = () => {
                 </Link>
               ))}
             </div>
-            <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
-              {data?.title}
-            </h1>
-            <div className="my-5">
+            <div className="d-form-control w-full">
+              <label className="d-label" htmlFor="title">
+                <span className="d-label-text">Titre</span>
+              </label>
+              <input
+                id="title"
+                value={title}
+                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Titre"
+              />
+            </div>
+            <div className="d-form-control w-full">
+              <label className="d-label" htmlFor="caption">
+                <span className="d-label-text">Légende</span>
+              </label>
+              <input
+                id="caption"
+                value={caption}
+                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                onChange={(e) => setCaption(e.target.value)}
+                placeholder="Légende"
+              />
+            </div>
+            <div className="d-form-control w-full">
+              <label className="d-label" htmlFor="slug">
+                <span className="d-label-text">Slug</span>
+              </label>
+              <input
+                id="slug"
+                value={postSlug}
+                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                onChange={handleSlugChange}
+                placeholder="Adresse simplifiée"
+              />
+            </div>
+            <div className="mb-5 mt-2">
+              <label className="d-label">
+                <span className="d-label-text">Catégories</span>
+              </label>
               {isPostDataLoaded && (
                 <MultiSelectTagsDropdown
                   loadOptions={promiseOptions}
@@ -169,6 +234,29 @@ const EditPost = () => {
                   onChange={(newValue) =>
                     setCategories(newValue.map((item) => item.value))
                   }
+                />
+              )}
+            </div>
+            <div className="mb-5 mt-2">
+              <label className="d-label">
+                <span className="d-label-text">Tags</span>
+              </label>
+              {isPostDataLoaded && (
+                <CreatableSelect
+                  defaultValue={data.tags.map((tag) => ({
+                    value: tag,
+                    label: tag,
+                  }))}
+                  placeholder="Sélectionnez un ou plusieurs tags"
+                  noOptionsMessage={() => {
+                    return "Aucun tag disponible";
+                  }}
+                  formatCreateLabel={(inputValue) => `Ajoutez ${inputValue}`}
+                  isMulti
+                  onChange={(newValue) =>
+                    setTags(newValue.map((item) => item.value))
+                  }
+                  className="relative z-20"
                 />
               )}
             </div>

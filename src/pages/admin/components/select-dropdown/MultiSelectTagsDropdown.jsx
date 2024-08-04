@@ -4,7 +4,7 @@ const MultiSelectTagsDropdown = ({
   defaultValue = [],
   loadOptions,
   onChange,
-  placeholder = "Sélectionnez une catégorie",
+  placeholder = "Sélectionnez une ou plusieurs catégories",
   noOptionsMessage = () => "Aucune catégorie disponible",
 }) => {
   return (
