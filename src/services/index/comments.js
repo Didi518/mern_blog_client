@@ -76,3 +76,28 @@ export const deleteComment = async ({ token, commentId }) => {
     throw new Error(error.message);
   }
 };
+
+export const getAllComments = async (
+  token,
+  searchKeyword = "",
+  page = 1,
+  limit = 10
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const { data, headers } = await axios.get(
+      `${serverUrl}/api/v1/comments?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`,
+      config
+    );
+    return { data, headers };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
