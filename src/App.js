@@ -10,7 +10,6 @@ import EditPost from "./pages/admin/screens/posts/EditPost";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
 import ManagePosts from "./pages/admin/screens/posts/ManagePosts";
-import NewPost from "./pages/admin/screens/posts/NewPost";
 import ProfilePage from "./pages/profile/ProfilePage";
 import RegisterPage from "./pages/register/RegisterPage";
 
@@ -26,7 +25,6 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Admin />} />
           <Route path="commentaires" element={<Comments />} />
-          <Route path="articles/nouveau" element={<NewPost />} />
           <Route path="articles/gestion" element={<ManagePosts />} />
           <Route
             path="articles/gestion/modifier/:slug"
