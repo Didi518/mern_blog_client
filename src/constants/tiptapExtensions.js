@@ -31,6 +31,7 @@ export const extensions = [
       keepAttributes: false,
     },
     codeBlock: false,
+    dropcursor: false,
   }),
   CodeBlockLowlight.configure({
     lowlight,
