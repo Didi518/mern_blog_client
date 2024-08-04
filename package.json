@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.2.1",
     "@tiptap/extension-code-block-lowlight": "^2.5.8",
     "@tiptap/extension-color": "^2.5.8",
+    "@tiptap/extension-dropcursor": "^2.5.8",
+    "@tiptap/extension-image": "^2.5.8",
     "@tiptap/extension-text-style": "^2.5.8",
     "@tiptap/html": "^2.5.8",
     "@tiptap/pm": "^2.5.8",

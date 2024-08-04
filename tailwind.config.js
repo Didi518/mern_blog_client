@@ -23,5 +23,6 @@ module.exports = {
     base: false,
     styled: true,
     utils: true,
+    prefix: "d-",
   },
 };

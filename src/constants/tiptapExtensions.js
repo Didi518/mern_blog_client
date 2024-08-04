@@ -5,6 +5,8 @@ import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 import { lowlight } from "lowlight";
 import { Color } from "@tiptap/extension-color";
+import Dropcursor from "@tiptap/extension-dropcursor";
+import Image from "@tiptap/extension-image";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
@@ -33,4 +35,6 @@ export const extensions = [
   CodeBlockLowlight.configure({
     lowlight,
   }),
+  Dropcursor,
+  Image,
 ];
