@@ -208,7 +208,7 @@ const EditPost = () => {
                 value={caption}
                 className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
                 onChange={(e) => setCaption(e.target.value)}
-                placeholder="Légende"
+                placeholder={data?.caption ? data.caption : "Légende"}
               />
             </div>
             <div className="d-form-control w-full">
