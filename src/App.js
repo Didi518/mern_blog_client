@@ -6,6 +6,7 @@ import Admin from "./pages/admin/screens/Admin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import ArticleDetailsPage from "./pages/article/ArticleDetailsPage";
 import Comments from "./pages/admin/screens/comments/Comments";
+import EditPost from "./pages/admin/screens/posts/EditPost";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
 import ManagePosts from "./pages/admin/screens/posts/ManagePosts";
@@ -27,6 +28,10 @@ function App() {
           <Route path="commentaires" element={<Comments />} />
           <Route path="articles/nouveau" element={<NewPost />} />
           <Route path="articles/gestion" element={<ManagePosts />} />
+          <Route
+            path="articles/gestion/modifier/:slug"
+            element={<EditPost />}
+          />
         </Route>
       </Routes>
       <Toaster />

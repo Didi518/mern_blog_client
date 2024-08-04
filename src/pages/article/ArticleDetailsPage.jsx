@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
-import { generateHTML } from "@tiptap/html";
-import Bold from "@tiptap/extension-bold";
-import Document from "@tiptap/extension-document";
-import Italic from "@tiptap/extension-italic";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
 
 import { getAllPosts, getSinglePost } from "../../services/index/posts";
+import parseJsonToHtml from "../../utils/parseJsonToHtml";
 import { images, stables } from "../../constants";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import CommentsContainer from "../../components/comments/CommentsContainer";
@@ -43,11 +37,7 @@ const ArticleDetailsPage = () => {
         { name: "Blog", link: "/blog" },
         { name: data.title, link: `/blog/${data.slug}` },
       ]);
-      setBody(
-        parse(
-          generateHTML(data?.body, [Bold, Document, Italic, Paragraph, Text])
-        )
-      );
+      setBody(parseJsonToHtml(data?.body));
     }
   }, [data]);
 
