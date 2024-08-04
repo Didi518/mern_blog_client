@@ -112,6 +112,7 @@ const Header = () => {
                 >
                   Créer un Nouveau Post
                 </button>
+                <Link to="/admin/categories/gestion">Catégories</Link>
               </NavItemCollapse>
             </div>
           </div>

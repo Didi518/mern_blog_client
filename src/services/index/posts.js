@@ -33,6 +33,7 @@ export const deletePost = async ({ slug, token }) => {
         Authorization: `Bearer ${token}`,
       },
     };
+
     const { data } = await axios.delete(
       `${serverUrl}/api/v1/posts/${slug}`,
       config

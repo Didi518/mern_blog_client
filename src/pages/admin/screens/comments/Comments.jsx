@@ -142,7 +142,7 @@ const Comments = () => {
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 space-x-5">
             <button
-              disabled={isLoadingDeleteData}
+              disabled={isLoadingUpdateCommentCheck}
               type="button"
               className={`${
                 comment?.check
