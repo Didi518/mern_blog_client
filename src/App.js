@@ -7,6 +7,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import ArticleDetailsPage from "./pages/article/ArticleDetailsPage";
 import Categories from "./pages/admin/screens/categories/Categories";
 import Comments from "./pages/admin/screens/comments/Comments";
+import EditCategory from "./pages/admin/screens/categories/EditCategory";
 import EditPost from "./pages/admin/screens/posts/EditPost";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
@@ -27,10 +28,14 @@ function App() {
           <Route index element={<Admin />} />
           <Route path="commentaires" element={<Comments />} />
           <Route path="articles/gestion" element={<ManagePosts />} />
-          <Route path="categories/gestion" element={<Categories />} />
           <Route
             path="articles/gestion/modifier/:slug"
             element={<EditPost />}
+          />
+          <Route path="categories/gestion" element={<Categories />} />
+          <Route
+            path="categories/gestion/modifier/:slug"
+            element={<EditCategory />}
           />
         </Route>
       </Routes>

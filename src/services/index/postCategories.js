@@ -59,3 +59,37 @@ export const createCategory = async ({ token, title }) => {
     throw new Error(error.message);
   }
 };
+
+export const updateCategory = async ({ token, title, slug }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${serverUrl}/api/v1/post-categories/${slug}`,
+      { title },
+      config
+    );
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const getSingleCategory = async ({ slug }) => {
+  try {
+    const { data } = await axios.get(
+      `${serverUrl}/api/v1/post-categories/${slug}`
+    );
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
