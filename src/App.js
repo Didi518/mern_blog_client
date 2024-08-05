@@ -5,6 +5,7 @@ import "./App.css";
 import Admin from "./pages/admin/screens/Admin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import ArticleDetailsPage from "./pages/article/ArticleDetailsPage";
+import BlogPage from "./pages/blog/BlogPage";
 import Categories from "./pages/admin/screens/categories/Categories";
 import Comments from "./pages/admin/screens/comments/Comments";
 import EditCategory from "./pages/admin/screens/categories/EditCategory";
@@ -21,6 +22,7 @@ function App() {
     <div className="App font-opensans">
       <Routes>
         <Route index path="/" element={<HomePage />} />
+        <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<ArticleDetailsPage />} />
         <Route path="/inscription" element={<RegisterPage />} />
         <Route path="/connexion" element={<LoginPage />} />

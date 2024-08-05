@@ -1,5 +1,6 @@
 import { FaArrowRight } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { getAllPosts } from "../../../services/index/posts";
@@ -9,7 +10,7 @@ import ErrorMessage from "../../../components/ErrorMessage";
 
 const Articles = () => {
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getAllPosts(),
+    queryFn: () => getAllPosts("", 1, 6),
     queryKey: ["posts"],
     onError: (error) => {
       toast.error(error.message);
@@ -39,10 +40,13 @@ const Articles = () => {
           ))
         )}
       </div>
-      <button className="mx-auto flex items-center gap-x-2 font-bold text-primary border-2 border-primary px-6 py-3 rounded-lg">
+      <Link
+        to="/blog"
+        className="mx-auto flex items-center gap-x-2 font-bold text-primary border-2 border-primary px-6 py-3 rounded-lg"
+      >
         <span>Plus d'articles</span>
         <FaArrowRight className="w-3 h-3" />
-      </button>
+      </Link>
     </section>
   );
 };

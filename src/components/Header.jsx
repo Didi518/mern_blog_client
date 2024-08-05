@@ -14,9 +14,9 @@ const navItemsInfo = [
     href: "/",
   },
   {
-    name: "Articles",
+    name: "Blog",
     type: "link",
-    href: "/articles",
+    href: "/blog",
   },
   {
     name: "Pages",

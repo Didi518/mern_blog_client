@@ -30,7 +30,7 @@ const Header = () => {
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries(["posts"]);
-        toast.success("L'article a bien été créé'");
+        toast.success("L'article a bien été créé");
         navigate(`/admin/articles/gestion/modifier/${data.slug}`);
       },
       onError: (error) => {

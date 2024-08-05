@@ -35,6 +35,10 @@ const ArticleDetailsPage = () => {
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (data) {
       setBreadCrumbsData([
         { name: "Accueil", link: "/" },

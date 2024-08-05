@@ -225,7 +225,7 @@ const EditPost = () => {
             </div>
             <div className="mb-5 mt-2">
               <label className="d-label">
-                <span className="d-label-text">Catégories</span>
+                <span className="d-label-text">Catégorie</span>
               </label>
               {isPostDataLoaded && (
                 <MultiSelectTagsDropdown
