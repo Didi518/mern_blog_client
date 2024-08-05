@@ -15,7 +15,7 @@ const Comment = ({
   replies,
 }) => {
   const isUserLoggined = Boolean(logginedUserId);
-  const commentBelongsToUser = logginedUserId === comment.user._id;
+  const commentBelongsToUser = logginedUserId === comment?.user?._id;
   const isReplying =
     affectedComment &&
     affectedComment.type === "replying" &&
@@ -25,7 +25,7 @@ const Comment = ({
     affectedComment.type === "editing" &&
     affectedComment._id === comment._id;
   const repliedCommentId = parentId ? parentId : comment._id;
-  const replyOnUserId = comment.user._id;
+  const replyOnUserId = comment.user?._id; // Notez le `?` pour éviter les erreurs si `user` est null
 
   return (
     <div
@@ -43,7 +43,8 @@ const Comment = ({
       />
       <div className="flex-1 flex flex-col">
         <h5 className="font-bold text-dark-hard text-x lg:text-sm">
-          {comment.user.name}
+          {comment.user?.name || "Utilisateur supprimé"}{" "}
+          {/* Gérer le cas où l'utilisateur est supprimé */}
         </h5>
         <span className="text-xs text-dark-light">
           {new Date(comment.createdAt).toLocaleDateString("fr-FR", {

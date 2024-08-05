@@ -19,7 +19,7 @@ import Editor from "../../../../components/editor/Editor";
 import MultiSelectTagsDropdown from "../../components/select-dropdown/MultiSelectTagsDropdown";
 
 const promiseOptions = async (inputValue) => {
-  const {data: categoriesData} = await getAllCategories();
+  const { data: categoriesData } = await getAllCategories();
   return filterCategories(inputValue, categoriesData);
 };
 
@@ -256,7 +256,7 @@ const EditPost = () => {
                   onChange={(newValue) =>
                     setTags(newValue.map((item) => item.value))
                   }
-                  className="relative z-20"
+                  className="relative"
                 />
               )}
             </div>

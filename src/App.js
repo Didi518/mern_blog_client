@@ -14,6 +14,7 @@ import LoginPage from "./pages/login/LoginPage";
 import ManagePosts from "./pages/admin/screens/posts/ManagePosts";
 import ProfilePage from "./pages/profile/ProfilePage";
 import RegisterPage from "./pages/register/RegisterPage";
+import Users from "./pages/admin/screens/users/Users";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             path="categories/gestion/modifier/:slug"
             element={<EditCategory />}
           />
+          <Route path="utilisateurs/gestion" element={<Users />} />
         </Route>
       </Routes>
       <Toaster />

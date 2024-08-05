@@ -62,6 +62,7 @@ const Categories = () => {
       token: userState.userInfo.token,
       title: categoryTitle,
     });
+    setCategoryTitle("");
   };
 
   return (

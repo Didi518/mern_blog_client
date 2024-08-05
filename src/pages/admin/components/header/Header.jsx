@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiFillDashboard, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { FaComments } from "react-icons/fa";
+import { FaComments, FaUser } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -88,6 +88,14 @@ const Header = () => {
                 setActiveNavName={setActiveNavName}
               />
               <NavItem
+                title="Utilisateurs"
+                link="/admin/utilisateurs/gestion"
+                icon={<FaUser className="text-xl" />}
+                name="users"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              />
+              <NavItem
                 title="Commentaires"
                 link="/admin/commentaires"
                 icon={<FaComments className="text-xl" />}
@@ -102,7 +110,6 @@ const Header = () => {
                 activeNavName={activeNavName}
                 setActiveNavName={setActiveNavName}
               >
-                <Link to="/admin/articles/gestion">Gestion des Articles</Link>
                 <button
                   disabled={isLoadingCreatePost}
                   className="text-start disabled:opacity-60 disabled:cursor-not-allowed"
@@ -112,6 +119,7 @@ const Header = () => {
                 >
                   Créer un Nouveau Post
                 </button>
+                <Link to="/admin/articles/gestion">Gestion des Articles</Link>
                 <Link to="/admin/categories/gestion">Catégories</Link>
               </NavItemCollapse>
             </div>

@@ -54,7 +54,11 @@ export const useDataTable = ({
   };
 
   const deleteDataHandler = ({ slug, token }) => {
-    mutateDeletePost({ slug, token });
+    if (
+      window.confirm("Êtes vous sur de vouloir supprimer cet enregistrement?")
+    ) {
+      mutateDeletePost({ slug, token });
+    }
   };
 
   return {
