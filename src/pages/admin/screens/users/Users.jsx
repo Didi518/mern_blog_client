@@ -1,5 +1,12 @@
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+
 import { useDataTable } from "../../../../hooks/useDataTable";
-import { deleteUser, getAllUsers } from "../../../../services/index/users";
+import {
+  deleteUser,
+  getAllUsers,
+  updateProfile,
+} from "../../../../services/index/users";
 import { images, stables } from "../../../../constants";
 import DataTable from "../../components/DataTable";
 
@@ -12,6 +19,7 @@ const Users = () => {
     isLoading,
     isFetching,
     isLoadingDeleteData,
+    queryClient,
     searchKeywordHandler,
     submitSearchKeywordHandler,
     deleteDataHandler,
@@ -28,6 +36,39 @@ const Users = () => {
       });
     },
   });
+
+  const { mutate: mutateUpdateUser, isLoading: isLoadingUpdateUser } =
+    useMutation({
+      mutationFn: ({ isAdmin, userId }) => {
+        return updateProfile({
+          token: userState.userInfo.token,
+          userData: { admin: isAdmin },
+          userId,
+        });
+      },
+      onSuccess: (_data) => {
+        queryClient.invalidateQueries(["users"]);
+        toast.success("L'utilisateur a bien été mis à jour");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.error(error);
+      },
+    });
+
+  const handleAdminCheck = (event, userId) => {
+    const initialCheckValue = !event.target.checked;
+
+    if (
+      window.confirm(
+        "Êtes-vous sur de vouloir changer le statut de cet utilisateur ?"
+      )
+    ) {
+      mutateUpdateUser({ isAdmin: event.target.checked, userId });
+    } else {
+      event.target.checked = initialCheckValue;
+    }
+  };
 
   return (
     <DataTable
@@ -94,7 +135,13 @@ const Users = () => {
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <p className="text-gray-900 whitespace-nowrap">
-              {user?.admin ? "✅" : "❌"}
+              <input
+                type="checkbox"
+                className="d-checkbox disabled:bg-orange-400 disabled:opacity-100 checked:bg-[url('../public/images/check.png')] bg-cover checked:disabled:bg-none"
+                defaultChecked={user.admin}
+                onChange={(event) => handleAdminCheck(event, user._id)}
+                disabled={isLoadingUpdateUser}
+              />
             </p>
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 space-x-5">
