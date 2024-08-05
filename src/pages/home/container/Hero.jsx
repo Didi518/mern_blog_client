@@ -1,6 +1,5 @@
-import { FiSearch } from "react-icons/fi";
-
 import { images } from "../../../constants";
+import Search from "../../../components/Search";
 
 const Hero = () => {
   return (
@@ -10,23 +9,10 @@ const Hero = () => {
           Découvrez les articles les plus intéressants
         </h1>
         <p className="text-dark-light mt-4 text-center md:text-xl lg:text-base xl:text-xl lg:text-left">
-          Venez partager vos idées et vos avis en toute simplicité. Tout sur les
-          technos et les outils en rapport avec le petit monde du développement
-          web.
+          Venez partager vos idées et vos avis en toute simplicité. Tout sur le
+          développement web, mais aussi les loisirs et bien d'autres choses.
         </p>
-        <div className="flex flex-col gap-y-2.5 mt-10 lg:mt-6 xl:mt-10 relative">
-          <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[#959ead]" />
-            <input
-              className="bg-transparent placeholder:font-bold font-semibold text-dark-soft placeholder:text-[#959ead] rounded-lg pl-12 pr-3 w-full py-3 focus:outline-none shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] md:py-4"
-              placeholder="Chercher un article"
-              type="text"
-            />
-          </div>
-          <button className="w-full bg-primary text-white font-semibold rounded-lg px-5 py-3 md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2">
-            Rechercher
-          </button>
-        </div>
+        {<Search className="lg:mt-6 mt-10" />}
         <div className="flex mt-4 flex-col lg:flex-row lg:items-start lg:flex-nowrap lg:gap-x-4 lg:mt-7">
           <span className="text-dark-light font-semibold italic mt-2 lg:mt-4 lg:text-sm xl:text-base">
             Tags Populaires:
