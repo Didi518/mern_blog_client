@@ -1853,6 +1853,11 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.10.4.tgz#427d5549943a9c6fce808e39ea64dbe60d4047f1"
   integrity sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==
 
+"@seznam/compose-react-refs@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@seznam/compose-react-refs/-/compose-react-refs-1.0.6.tgz#6ec4e70bdd6e32f8e70b4100f27267cf306bd8df"
+  integrity sha512-izzOXQfeQLonzrIQb8u6LQ8dk+ymz3WXTIXjvOlTXHq6sbzROg3NWU+9TTAOpEoK9Bth24/6F/XrfHJ5yR5n6Q==
+
 "@sinclair/typebox@^0.24.1":
   version "0.24.51"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.51.tgz#645f33fe4e02defe26f2f5c0410e1c094eac7f5f"
@@ -2729,6 +2734,11 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
+
+"@vtaits/use-lazy-ref@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@vtaits/use-lazy-ref/-/use-lazy-ref-0.1.3.tgz#621b1fb01c74bdb2932b8c6a29a0cece80c18a2c"
+  integrity sha512-ZTLuFBHSivPcgWrwkXe5ExVt6R3/ybD+N0yFPy4ClzCztk/9bUD/1udKQ/jd7eCal+lapSrRWXbffqI9jkpDlg==
 
 "@webassemblyjs/ast@1.12.1", "@webassemblyjs/ast@^1.12.1":
   version "1.12.1"
@@ -6928,6 +6938,11 @@ klona@^2.0.4, klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.6.tgz#85bffbf819c03b2f53270412420a4555ef882e22"
   integrity sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==
 
+krustykrab@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/krustykrab/-/krustykrab-1.1.0.tgz#2b77faf06da9a43fe740799ac73fc2e8b6b515b0"
+  integrity sha512-xpX9MPbw+nJseewe6who9Oq46RQwrBfps+dO/N4fSjJhsf2+y4XWC2kz46oBGX8yzMHyYJj35ug0X5s5yxB6tA==
+
 language-subtag-registry@^0.3.20:
   version "0.3.23"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.23.tgz#23529e04d9e3b74679d70142df3fd2eb6ec572e7"
@@ -8821,10 +8836,22 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-select@^5.8.0:
-  version "5.8.0"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.8.0.tgz#bd5c467a4df223f079dd720be9498076a3f085b5"
-  integrity sha512-TfjLDo58XrhP6VG5M/Mi56Us0Yt8X7xD6cDybC7yoRMUNm7BGO7qk8J0TLQOua/prb8vUOtsfnXZwfm30HGsAA==
+react-select-async-paginate@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/react-select-async-paginate/-/react-select-async-paginate-0.7.6.tgz#049ca4694408fcbd8aae9e4b1dea05cf5a49c4a6"
+  integrity sha512-aaQpzdfSUbGC8AaagxE8PuqJrwnDVu6Nx/J4cWPzpMwDyP1SEJonwnjZg3iI/zbUIRIpP+Mj5hrp2m7YeZXJvA==
+  dependencies:
+    "@seznam/compose-react-refs" "^1.0.6"
+    "@vtaits/use-lazy-ref" "^0.1.3"
+    krustykrab "^1.1.0"
+    sleep-promise "^9.1.0"
+    use-is-mounted-ref "^1.5.0"
+    use-latest "^1.2.1"
+
+react-select@^5.8.1:
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.8.1.tgz#3284a93b7633b5e893306b2a8007ea0f793e62b9"
+  integrity sha512-RT1CJmuc+ejqm5MPgzyZujqDskdvB9a9ZqrdnVLsvAHjJ3Tj0hELnLeVPQlmYdVKCdCpxanepl6z7R5KhXhWzg==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
@@ -9388,6 +9415,11 @@ slash@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-4.0.0.tgz#2422372176c4c6c5addb5e2ada885af984b396a7"
   integrity sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==
+
+sleep-promise@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/sleep-promise/-/sleep-promise-9.1.0.tgz#101ebe65700bcd184709da95d960967b02b79d03"
+  integrity sha512-UHYzVpz9Xn8b+jikYSD6bqvf754xL2uBUzDFwiU6NcdZeifPr6UfgU43xpkPu67VMS88+TI2PSI7Eohgqf2fKA==
 
 sockjs@^0.3.24:
   version "0.3.24"
@@ -10234,10 +10266,22 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-use-isomorphic-layout-effect@^1.1.2:
+use-is-mounted-ref@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/use-is-mounted-ref/-/use-is-mounted-ref-1.5.0.tgz#d737e7b30f1bbbaca594f21cdd2621dc52ae8180"
+  integrity sha512-p5FksHf/ospZUr5KU9ese6u3jp9fzvZ3wuSb50i0y6fdONaHWgmOqQtxR/PUcwi6hnhQDbNxWSg3eTK3N6m+dg==
+
+use-isomorphic-layout-effect@^1.1.1, use-isomorphic-layout-effect@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.1.2.tgz#497cefb13d863d687b08477d9e5a164ad8c1a6fb"
   integrity sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==
+
+use-latest@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/use-latest/-/use-latest-1.2.1.tgz#d13dfb4b08c28e3e33991546a2cee53e14038cf2"
+  integrity sha512-xA+AVm/Wlg3e2P/JiItTziwS7FK92LWrDB0p+hgXloIMuVCeJJ8v6f0eeHyPZaJrM+usM1FkFfbNCrJGs8A/zw==
+  dependencies:
+    use-isomorphic-layout-effect "^1.1.1"
 
 use-sync-external-store@^1.0.0, use-sync-external-store@^1.2.2:
   version "1.2.2"

@@ -2,10 +2,17 @@ import axios from "axios";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export const getAllPosts = async (searchKeyword = "", page = 1, limit = 10) => {
+export const getAllPosts = async (
+  searchKeyword = "",
+  page = 1,
+  limit = 10,
+  categories = []
+) => {
   try {
     const { data, headers } = await axios.get(
-      `${serverUrl}/api/v1/posts?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`
+      `${serverUrl}/api/v1/posts?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}&categories=${categories.join(
+        ","
+      )}`
     );
     return { data, headers };
   } catch (error) {

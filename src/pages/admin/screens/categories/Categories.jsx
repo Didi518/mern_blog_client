@@ -24,7 +24,7 @@ const Categories = () => {
       },
       onSuccess: (_data) => {
         queryClient.invalidateQueries(["categories"]);
-        toast.success("La catégorie a bien été créé'");
+        toast.success("La catégorie a bien été créé");
       },
       onError: (error) => {
         toast.error(error.message);
