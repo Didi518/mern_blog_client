@@ -77,7 +77,7 @@ export default async function getCroppedImg(
     pixelCrop.height
   );
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     croppedCanvas.toBlob((file) => {
       resolve({ url: URL.createObjectURL(file), file: file });
     });

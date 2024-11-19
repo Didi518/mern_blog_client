@@ -36,7 +36,7 @@ const CropEasy = ({ photo, setOpenCrop }) => {
     },
   });
 
-  const handleCropComplete = (croppedArea, croppedAreaPixels) => {
+  const handleCropComplete = (_croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
