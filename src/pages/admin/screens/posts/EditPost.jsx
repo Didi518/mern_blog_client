@@ -96,7 +96,6 @@ const EditPost = () => {
         return file
       }
       const picture = await urlToObject(data?.photo)
-
       updatedData.append('postPicture', picture)
     }
 
@@ -113,7 +112,7 @@ const EditPost = () => {
   }
 
   const handleDeleteImage = () => {
-    if (window.confirm("Êtes-vous sur de vouloir supprimer l'image?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer l'image?")) {
       setInitialPhoto(null)
       setPhoto(null)
     }
@@ -126,7 +125,6 @@ const EditPost = () => {
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '')
       .replace(/--+/g, '-')
-
     setPostSlug(slug)
   }
 
@@ -137,7 +135,7 @@ const EditPost = () => {
       {isLoading ? (
         <ArticleDetailSkeleton />
       ) : isError ? (
-        <ErrorMessage message="Echec de la récupération des détails du post" />
+        <ErrorMessage message="Échec de la récupération des détails du post" />
       ) : (
         <section className="container mx-auto max-w-5xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start">
           <article className="flex-1">
