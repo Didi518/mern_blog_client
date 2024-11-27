@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-import { deletePost, getAllPosts } from "../../../../services/index/posts";
-import { useDataTable } from "../../../../hooks/useDataTable";
-import { images, stables } from "../../../../constants";
-import DataTable from "../../components/DataTable";
+import { deletePost, getAllPosts } from '../../../../services/index/posts'
+import { useDataTable } from '../../../../hooks/useDataTable'
+import { images } from '../../../../constants'
+import DataTable from '../../components/DataTable'
 
 const ManagePosts = () => {
   const {
@@ -20,15 +20,15 @@ const ManagePosts = () => {
     setCurrentPage,
   } = useDataTable({
     dataQueryFn: () => getAllPosts(searchKeyword, currentPage),
-    dataQueryKey: "posts",
+    dataQueryKey: 'posts',
     deleteDataMessage: "L'article a bien été supprimé",
     mutateDeleteFn: ({ slug, token }) => {
       return deletePost({
         slug,
         token,
-      });
+      })
     },
-  });
+  })
 
   return (
     <DataTable
@@ -39,11 +39,11 @@ const ManagePosts = () => {
       searchKeywordOnChangeHandler={searchKeywordHandler}
       searchKeyword={searchKeyword}
       tableHeaderTitleList={[
-        "Titre",
-        "Catégories",
-        "Créé le",
-        "Tags",
-        "Actions",
+        'Titre',
+        'Catégories',
+        'Créé le',
+        'Tags',
+        'Actions',
       ]}
       isLoading={isLoading}
       isFetching={isFetching}
@@ -61,11 +61,7 @@ const ManagePosts = () => {
                 <a href="/" className="relative block">
                   <img
                     alt={post.title}
-                    src={
-                      post?.photo
-                        ? stables.UPLOAD_FOLDER_BASE_URL + post?.photo
-                        : images.samplePostImage
-                    }
+                    src={post?.photo ? post?.photo : images.samplePostImage}
                     className="mx-auto object-cover rounded-lg w-10  aspect-square"
                   />
                 </a>
@@ -84,19 +80,19 @@ const ManagePosts = () => {
                       (category, index) =>
                         `${category.title}${
                           post.categories.slice(0, 3).length === index + 1
-                            ? ""
-                            : ", "
+                            ? ''
+                            : ', '
                         }`
                     )
-                : "Sans catégorie"}
+                : 'Sans catégorie'}
             </p>
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <p className="text-gray-900 whitespace-no-wrap">
-              {new Date(post.createdAt).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
+              {new Date(post.createdAt).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
               })}
             </p>
           </td>
@@ -106,10 +102,10 @@ const ManagePosts = () => {
                 ? post.tags.map((tag, index) => (
                     <p key={index}>
                       {tag}
-                      {post.tags.length - 1 !== index && ", "}
+                      {post.tags.length - 1 !== index && ', '}
                     </p>
                   ))
-                : "Aucun tag"}
+                : 'Aucun tag'}
             </div>
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 space-x-5">
@@ -136,7 +132,7 @@ const ManagePosts = () => {
         </tr>
       ))}
     </DataTable>
-  );
-};
+  )
+}
 
-export default ManagePosts;
+export default ManagePosts

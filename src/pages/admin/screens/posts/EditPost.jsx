@@ -1,50 +1,49 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { HiOutlineCamera } from "react-icons/hi";
-import CreatableSelect from "react-select/creatable";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { HiOutlineCamera } from 'react-icons/hi'
+import CreatableSelect from 'react-select/creatable'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { getSinglePost, updatePost } from "../../../../services/index/posts";
-import { getAllCategories } from "../../../../services/index/postCategories";
-import { stables } from "../../../../constants";
+import { getSinglePost, updatePost } from '../../../../services/index/posts'
+import { getAllCategories } from '../../../../services/index/postCategories'
 import {
   categoryToOption,
   filterCategories,
-} from "../../../../utils/multiSelectTagsUtils";
-import ArticleDetailSkeleton from "../../../article/components/ArticleDetailsSkeleton";
-import ErrorMessage from "../../../../components/ErrorMessage";
-import Editor from "../../../../components/editor/Editor";
-import MultiSelectTagsDropdown from "../../components/select-dropdown/MultiSelectTagsDropdown";
+} from '../../../../utils/multiSelectTagsUtils'
+import ArticleDetailSkeleton from '../../../article/components/ArticleDetailsSkeleton'
+import ErrorMessage from '../../../../components/ErrorMessage'
+import Editor from '../../../../components/editor/Editor'
+import MultiSelectTagsDropdown from '../../components/select-dropdown/MultiSelectTagsDropdown'
 
 const promiseOptions = async (inputValue) => {
-  const { data: categoriesData } = await getAllCategories();
-  return filterCategories(inputValue, categoriesData);
-};
+  const { data: categoriesData } = await getAllCategories()
+  return filterCategories(inputValue, categoriesData)
+}
 
 const removeAccents = (str) => {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-};
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
 
 const EditPost = () => {
-  const { slug } = useParams();
-  const [photo, setPhoto] = useState(null);
-  const [initialPhoto, setInitialPhoto] = useState(null);
-  const [body, setBody] = useState(null);
-  const [categories, setCategories] = useState(null);
-  const [title, setTitle] = useState("");
-  const [tags, setTags] = useState(null);
-  const [postSlug, setPostSlug] = useState(slug);
-  const [caption, setCaption] = useState("");
-  const userState = useSelector((state) => state.user);
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const { slug } = useParams()
+  const [photo, setPhoto] = useState(null)
+  const [initialPhoto, setInitialPhoto] = useState(null)
+  const [body, setBody] = useState(null)
+  const [categories, setCategories] = useState(null)
+  const [title, setTitle] = useState('')
+  const [tags, setTags] = useState(null)
+  const [postSlug, setPostSlug] = useState(slug)
+  const [caption, setCaption] = useState('')
+  const userState = useSelector((state) => state.user)
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
-    queryKey: ["blog", slug],
-  });
+    queryKey: ['blog', slug],
+  })
 
   const {
     mutate: mutateUpdatePostDetails,
@@ -55,85 +54,83 @@ const EditPost = () => {
         updatedData,
         slug,
         token,
-      });
+      })
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["blog", slug]);
-      toast.success("L'article a bien été mis à jour");
+      queryClient.invalidateQueries(['blog', slug])
+      toast.success("L'article a bien été mis à jour")
       navigate(`/admin/articles/gestion/modifier/${data.slug}`, {
         replace: true,
-      });
+      })
     },
     onError: (error) => {
-      toast.error(error.message);
-      console.error(error);
+      toast.error(error.message)
+      console.error(error)
     },
-  });
+  })
 
   useEffect(() => {
     if (!isLoading && !isError) {
-      setInitialPhoto(data?.photo);
-      setCategories(data.categories.map((item) => item._id));
-      setTitle(data.title);
-      setTags(data.tags);
+      setInitialPhoto(data?.photo)
+      setCategories(data.categories.map((item) => item._id))
+      setTitle(data.title)
+      setTags(data.tags)
     }
-  }, [data, isError, isLoading]);
+  }, [data, isError, isLoading])
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setPhoto(file);
-  };
+    const file = e.target.files[0]
+    setPhoto(file)
+  }
 
   const handleUpdatePost = async () => {
-    let updatedData = new FormData();
+    let updatedData = new FormData()
 
     if (!initialPhoto && photo) {
-      updatedData.append("postPicture", photo);
+      updatedData.append('postPicture', photo)
     } else if (initialPhoto && !photo) {
       const urlToObject = async (url) => {
-        let response = await fetch(url);
-        let blob = await response.blob();
-        const file = new File([blob], initialPhoto, { type: blob.type });
-        return file;
-      };
-      const picture = await urlToObject(
-        stables.UPLOAD_FOLDER_BASE_URL + data?.photo
-      );
+        let response = await fetch(url)
+        let blob = await response.blob()
+        const file = new File([blob], initialPhoto, { type: blob.type })
+        return file
+      }
+      const picture = await urlToObject(data?.photo)
 
-      updatedData.append("postPicture", picture);
+      updatedData.append('postPicture', picture)
     }
 
     updatedData.append(
-      "document",
+      'document',
       JSON.stringify({ body, categories, title, tags, slug: postSlug, caption })
-    );
+    )
 
     mutateUpdatePostDetails({
       updatedData,
       slug,
       token: userState.userInfo.token,
-    });
-  };
+    })
+  }
 
   const handleDeleteImage = () => {
     if (window.confirm("Êtes-vous sur de vouloir supprimer l'image?")) {
-      setInitialPhoto(null);
-      setPhoto(null);
+      setInitialPhoto(null)
+      setPhoto(null)
     }
-  };
+  }
 
   const handleSlugChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value
     const slug = removeAccents(value)
       .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "")
-      .replace(/--+/g, "-");
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/--+/g, '-')
 
-    setPostSlug(slug);
-  };
+    setPostSlug(slug)
+  }
 
-  let isPostDataLoaded = !isLoading && !isError;
+  let isPostDataLoaded = !isLoading && !isError
 
   return (
     <div>
@@ -153,7 +150,7 @@ const EditPost = () => {
                 />
               ) : initialPhoto ? (
                 <img
-                  src={stables.UPLOAD_FOLDER_BASE_URL + data?.photo}
+                  src={data?.photo}
                   alt={data?.title}
                   className="rounded-xl w-full"
                 />
@@ -208,7 +205,7 @@ const EditPost = () => {
                 value={caption}
                 className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
                 onChange={(e) => setCaption(e.target.value)}
-                placeholder={data?.caption ? data.caption : "Légende"}
+                placeholder={data?.caption ? data.caption : 'Légende'}
               />
             </div>
             <div className="d-form-control w-full">
@@ -249,7 +246,7 @@ const EditPost = () => {
                   }))}
                   placeholder="Sélectionnez un ou plusieurs tags"
                   noOptionsMessage={() => {
-                    return "Aucun tag disponible";
+                    return 'Aucun tag disponible'
                   }}
                   formatCreateLabel={(inputValue) => `Ajoutez ${inputValue}`}
                   isMulti
@@ -266,7 +263,7 @@ const EditPost = () => {
                   content={data?.body}
                   editable={true}
                   onDataChange={(data) => {
-                    setBody(data);
+                    setBody(data)
                   }}
                 />
               )}
@@ -283,7 +280,7 @@ const EditPost = () => {
         </section>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default EditPost;
+export default EditPost

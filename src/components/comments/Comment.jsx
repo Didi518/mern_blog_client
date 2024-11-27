@@ -1,7 +1,7 @@
-import { FiMessageSquare, FiEdit2, FiTrash } from "react-icons/fi";
+import { FiMessageSquare, FiEdit2, FiTrash } from 'react-icons/fi'
 
-import { images, stables } from "../../constants";
-import CommentForm from "./CommentForm";
+import { images } from '../../constants'
+import CommentForm from './CommentForm'
 
 const Comment = ({
   comment,
@@ -14,18 +14,18 @@ const Comment = ({
   deleteComment,
   replies,
 }) => {
-  const isUserLoggined = Boolean(logginedUserId);
-  const commentBelongsToUser = logginedUserId === comment?.user?._id;
+  const isUserLoggined = Boolean(logginedUserId)
+  const commentBelongsToUser = logginedUserId === comment?.user?._id
   const isReplying =
     affectedComment &&
-    affectedComment.type === "replying" &&
-    affectedComment._id === comment._id;
+    affectedComment.type === 'replying' &&
+    affectedComment._id === comment._id
   const isEditing =
     affectedComment &&
-    affectedComment.type === "editing" &&
-    affectedComment._id === comment._id;
-  const repliedCommentId = parentId ? parentId : comment._id;
-  const replyOnUserId = comment.user?._id; // Notez le `?` pour éviter les erreurs si `user` est null
+    affectedComment.type === 'editing' &&
+    affectedComment._id === comment._id
+  const repliedCommentId = parentId ? parentId : comment._id
+  const replyOnUserId = comment.user?._id // Notez le `?` pour éviter les erreurs si `user` est null
 
   return (
     <div
@@ -33,25 +33,21 @@ const Comment = ({
       id={`comment-${comment?._id}`}
     >
       <img
-        src={
-          comment?.user?.avatar
-            ? stables.UPLOAD_FOLDER_BASE_URL + comment.user.avatar
-            : images.userImage
-        }
+        src={comment?.user?.avatar ? comment.user.avatar : images.userImage}
         alt="user profile"
         className="w-9 h-9 object-cover rounded-full"
       />
       <div className="flex-1 flex flex-col">
         <h5 className="font-bold text-dark-hard text-x lg:text-sm">
-          {comment.user?.name || "Utilisateur supprimé"}{" "}
+          {comment.user?.name || 'Utilisateur supprimé'}{' '}
           {/* Gérer le cas où l'utilisateur est supprimé */}
         </h5>
         <span className="text-xs text-dark-light">
-          {new Date(comment.createdAt).toLocaleDateString("fr-FR", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-            hour: "2-digit",
+          {new Date(comment.createdAt).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
           })}
         </span>
         {!isEditing && (
@@ -72,7 +68,7 @@ const Comment = ({
             <button
               className="flex items-center space-x-2"
               onClick={() =>
-                setAffectedComment({ type: "replying", _id: comment._id })
+                setAffectedComment({ type: 'replying', _id: comment._id })
               }
             >
               <FiMessageSquare className="w-4 h-auto" />
@@ -84,7 +80,7 @@ const Comment = ({
               <button
                 className="flex items-center space-x-2"
                 onClick={() =>
-                  setAffectedComment({ type: "editing", _id: comment._id })
+                  setAffectedComment({ type: 'editing', _id: comment._id })
                 }
               >
                 <FiEdit2 className="w-4 h-auto" />
@@ -129,7 +125,7 @@ const Comment = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Comment;
+export default Comment

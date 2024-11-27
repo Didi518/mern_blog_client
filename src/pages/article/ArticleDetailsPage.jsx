@@ -1,52 +1,52 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
-import { getAllPosts, getSinglePost } from "../../services/index/posts";
-import parseJsonToHtml from "../../utils/parseJsonToHtml";
-import { images, stables } from "../../constants";
-import BreadCrumbs from "../../components/BreadCrumbs";
-import CommentsContainer from "../../components/comments/CommentsContainer";
-import MainLayout from "../../components/MainLayout";
-import SocialShareButton from "../../components/SocialShareButton";
-import SuggestedPosts from "./container/SuggestedPosts";
-import ErrorMessage from "../../components/ErrorMessage";
-import ArticleDetailSkeleton from "./components/ArticleDetailsSkeleton";
-import Editor from "../../components/editor/Editor";
+import { getAllPosts, getSinglePost } from '../../services/index/posts'
+import parseJsonToHtml from '../../utils/parseJsonToHtml'
+import { images } from '../../constants'
+import BreadCrumbs from '../../components/BreadCrumbs'
+import CommentsContainer from '../../components/comments/CommentsContainer'
+import MainLayout from '../../components/MainLayout'
+import SocialShareButton from '../../components/SocialShareButton'
+import SuggestedPosts from './container/SuggestedPosts'
+import ErrorMessage from '../../components/ErrorMessage'
+import ArticleDetailSkeleton from './components/ArticleDetailsSkeleton'
+import Editor from '../../components/editor/Editor'
 
 const ArticleDetailsPage = () => {
-  const { slug } = useParams();
-  const [breadCrumbsData, setBreadCrumbsData] = useState([]);
-  const [setBody] = useState(null);
-  const userState = useSelector((state) => state.user);
+  const { slug } = useParams()
+  const [breadCrumbsData, setBreadCrumbsData] = useState([])
+  const [setBody] = useState(null)
+  const userState = useSelector((state) => state.user)
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
-    queryKey: ["blog", slug],
+    queryKey: ['blog', slug],
     onSuccess: (data) => {
-      setBody(parseJsonToHtml(data?.body));
+      setBody(parseJsonToHtml(data?.body))
     },
-  });
+  })
 
   const { data: postsData } = useQuery({
     queryFn: () => getAllPosts(),
-    queryKey: ["posts"],
-  });
+    queryKey: ['posts'],
+  })
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     if (data) {
       setBreadCrumbsData([
-        { name: "Accueil", link: "/" },
-        { name: "Blog", link: "/blog" },
+        { name: 'Accueil', link: '/' },
+        { name: 'Blog', link: '/blog' },
         { name: data.title, link: `/blog/${data.slug}` },
-      ]);
+      ])
     }
-  }, [data]);
+  }, [data])
 
   return (
     <MainLayout>
@@ -59,11 +59,7 @@ const ArticleDetailsPage = () => {
           <article className="flex-1">
             <BreadCrumbs data={breadCrumbsData} />
             <img
-              src={
-                data?.photo
-                  ? stables.UPLOAD_FOLDER_BASE_URL + data?.photo
-                  : images.samplePostImage
-              }
+              src={data?.photo ? data?.photo : images.samplePostImage}
               alt={data?.title}
               className="rounded-xl w-full"
             />
@@ -113,7 +109,7 @@ const ArticleDetailsPage = () => {
         </section>
       )}
     </MainLayout>
-  );
-};
+  )
+}
 
-export default ArticleDetailsPage;
+export default ArticleDetailsPage

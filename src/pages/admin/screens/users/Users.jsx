@@ -1,14 +1,14 @@
-import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
+import toast from 'react-hot-toast'
+import { useMutation } from '@tanstack/react-query'
 
-import { useDataTable } from "../../../../hooks/useDataTable";
+import { useDataTable } from '../../../../hooks/useDataTable'
 import {
   deleteUser,
   getAllUsers,
   updateProfile,
-} from "../../../../services/index/users";
-import { images, stables } from "../../../../constants";
-import DataTable from "../../components/DataTable";
+} from '../../../../services/index/users'
+import { images } from '../../../../constants'
+import DataTable from '../../components/DataTable'
 
 const Users = () => {
   const {
@@ -27,15 +27,15 @@ const Users = () => {
   } = useDataTable({
     dataQueryFn: () =>
       getAllUsers(userState.userInfo.token, searchKeyword, currentPage),
-    dataQueryKey: "users",
+    dataQueryKey: 'users',
     deleteDataMessage: "L'utilisateur a bien été supprimé",
     mutateDeleteFn: ({ slug, token }) => {
       return deleteUser({
         slug,
         token,
-      });
+      })
     },
-  });
+  })
 
   const { mutate: mutateUpdateUser, isLoading: isLoadingUpdateUser } =
     useMutation({
@@ -44,31 +44,31 @@ const Users = () => {
           token: userState.userInfo.token,
           userData: { admin: isAdmin },
           userId,
-        });
+        })
       },
       onSuccess: (_data) => {
-        queryClient.invalidateQueries(["users"]);
-        toast.success("L'utilisateur a bien été mis à jour");
+        queryClient.invalidateQueries(['users'])
+        toast.success("L'utilisateur a bien été mis à jour")
       },
       onError: (error) => {
-        toast.error(error.message);
-        console.error(error);
+        toast.error(error.message)
+        console.error(error)
       },
-    });
+    })
 
   const handleAdminCheck = (event, userId) => {
-    const initialCheckValue = !event.target.checked;
+    const initialCheckValue = !event.target.checked
 
     if (
       window.confirm(
-        "Êtes-vous sur de vouloir changer le statut de cet utilisateur ?"
+        'Êtes-vous sur de vouloir changer le statut de cet utilisateur ?'
       )
     ) {
-      mutateUpdateUser({ isAdmin: event.target.checked, userId });
+      mutateUpdateUser({ isAdmin: event.target.checked, userId })
     } else {
-      event.target.checked = initialCheckValue;
+      event.target.checked = initialCheckValue
     }
-  };
+  }
 
   return (
     <DataTable
@@ -79,12 +79,12 @@ const Users = () => {
       searchKeywordOnChangeHandler={searchKeywordHandler}
       searchKeyword={searchKeyword}
       tableHeaderTitleList={[
-        "Nom",
-        "Email",
-        "Créé le",
-        "Vérifié",
-        "Admin",
-        "Actions",
+        'Nom',
+        'Email',
+        'Créé le',
+        'Vérifié',
+        'Admin',
+        'Actions',
       ]}
       isLoading={isLoading}
       isFetching={isFetching}
@@ -102,11 +102,7 @@ const Users = () => {
                 <a href="/" className="relative block">
                   <img
                     alt={user?.name}
-                    src={
-                      user?.avatar
-                        ? stables.UPLOAD_FOLDER_BASE_URL + user?.avatar
-                        : images.userImage
-                    }
+                    src={user?.avatar ? user?.avatar : images.userImage}
                     className="mx-auto object-cover rounded-lg w-10  aspect-square"
                   />
                 </a>
@@ -121,16 +117,16 @@ const Users = () => {
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <p className="text-gray-900 whitespace-no-wrap">
-              {new Date(user.createdAt).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
+              {new Date(user.createdAt).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
               })}
             </p>
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <p className="text-gray-900 whitespace-nowrap">
-              {user?.verified ? "✅" : "❌"}
+              {user?.verified ? '✅' : '❌'}
             </p>
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
@@ -162,7 +158,7 @@ const Users = () => {
         </tr>
       ))}
     </DataTable>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users

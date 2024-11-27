@@ -1,8 +1,8 @@
-import { AiOutlineClose } from "react-icons/ai";
-import { BsCheckLg } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { AiOutlineClose } from 'react-icons/ai'
+import { BsCheckLg } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 
-import { images, stables } from "../constants";
+import { images } from '../constants'
 
 const ArticleCard = ({ post, className }) => {
   return (
@@ -11,11 +11,7 @@ const ArticleCard = ({ post, className }) => {
     >
       <Link to={`/blog/${post.slug}`}>
         <img
-          src={
-            post.photo
-              ? stables.UPLOAD_FOLDER_BASE_URL + post.photo
-              : images.samplePostImage
-          }
+          src={post.photo ? post.photo : images.samplePostImage}
           alt={post.title}
           className="w-full object-cover object-center h-auto md:h-52 lg:h-48 xl:h-60"
         />
@@ -32,11 +28,7 @@ const ArticleCard = ({ post, className }) => {
         <div className="flex justify-between flex-nowrap items-center mt-6">
           <div className="flex items-center gap-x-2 md:gap-x-2.5">
             <img
-              src={
-                post?.user?.avatar
-                  ? stables.UPLOAD_FOLDER_BASE_URL + post?.user?.avatar
-                  : images.userImage
-              }
+              src={post?.user?.avatar ? post?.user?.avatar : images.userImage}
               alt={post?.user?.name}
               className="w-9 h-9 md:w-10 md:h-10 rounded-full"
             />
@@ -47,7 +39,7 @@ const ArticleCard = ({ post, className }) => {
               <div className="flex items-center gap-x-2">
                 <span
                   className={`${
-                    post.user.verified ? "bg-[#36b37e]" : "bg-red-500"
+                    post.user.verified ? 'bg-[#36b37e]' : 'bg-red-500'
                   }  w-fit bg-opacity-20 p-1.5 rounded-full`}
                 >
                   {post.user.verified ? (
@@ -57,21 +49,21 @@ const ArticleCard = ({ post, className }) => {
                   )}
                 </span>
                 <span className="italic text-dark-light text-xs md:text-sm">
-                  Auteur {post.user.verified ? "vérifié" : "non-vérifié"}
+                  Auteur {post.user.verified ? 'vérifié' : 'non-vérifié'}
                 </span>
               </div>
             </div>
           </div>
           <span className="font-bold text-dark-light italic text-sm md:text-base">
-            {new Date(post.createdAt).getDate()}{" "}
-            {new Date(post.createdAt).toLocaleString("default", {
-              month: "long",
+            {new Date(post.createdAt).getDate()}{' '}
+            {new Date(post.createdAt).toLocaleString('default', {
+              month: 'long',
             })}
           </span>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ArticleCard;
+export default ArticleCard

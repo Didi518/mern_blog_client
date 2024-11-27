@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
+import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { useMutation } from '@tanstack/react-query'
 
-import { useDataTable } from "../../../../hooks/useDataTable";
+import { useDataTable } from '../../../../hooks/useDataTable'
 import {
   deleteComment,
   getAllComments,
   updateComment,
-} from "../../../../services/index/comments";
-import { images, stables } from "../../../../constants";
-import DataTable from "../../components/DataTable";
+} from '../../../../services/index/comments'
+import { images } from '../../../../constants'
+import DataTable from '../../components/DataTable'
 
 const Comments = () => {
   const {
@@ -28,36 +28,36 @@ const Comments = () => {
   } = useDataTable({
     dataQueryFn: () =>
       getAllComments(userState.userInfo.token, searchKeyword, currentPage),
-    dataQueryKey: "comments",
-    deleteDataMessage: "Le commentaire a bien été supprimé",
+    dataQueryKey: 'comments',
+    deleteDataMessage: 'Le commentaire a bien été supprimé',
     mutateDeleteFn: ({ slug, token }) => {
       return deleteComment({
         commentId: slug,
         token,
-      });
+      })
     },
-  });
+  })
 
   const {
     mutate: mutateUpdateCommentCheck,
     isLoading: isLoadingUpdateCommentCheck,
   } = useMutation({
     mutationFn: ({ token, check, commentId }) => {
-      return updateComment({ token, check, commentId });
+      return updateComment({ token, check, commentId })
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["comments"]);
+      queryClient.invalidateQueries(['comments'])
       toast.success(
         data?.check
-          ? "Le commentaire a bien été approuvé"
-          : "Le commentaire a été rejeté"
-      );
+          ? 'Le commentaire a bien été approuvé'
+          : 'Le commentaire a été rejeté'
+      )
     },
     onError: (error) => {
-      toast.error(error.message);
-      console.error(error);
+      toast.error(error.message)
+      console.error(error)
     },
-  });
+  })
 
   return (
     <DataTable
@@ -68,11 +68,11 @@ const Comments = () => {
       searchKeywordOnChangeHandler={searchKeywordHandler}
       searchKeyword={searchKeyword}
       tableHeaderTitleList={[
-        "Auteur",
-        "Commentaire",
-        "Réponse à",
-        "Créé le",
-        "Actions",
+        'Auteur',
+        'Commentaire',
+        'Réponse à',
+        'Créé le',
+        'Actions',
       ]}
       isFetching={isFetching}
       isLoading={isLoading}
@@ -91,7 +91,7 @@ const Comments = () => {
                     alt={comment?.user?.name}
                     src={
                       comment?.user?.avatar
-                        ? stables.UPLOAD_FOLDER_BASE_URL + comment?.user?.avatar
+                        ? comment?.user?.avatar
                         : images.userImage
                     }
                     className="mx-auto object-cover rounded-lg w-10  aspect-square"
@@ -108,7 +108,7 @@ const Comments = () => {
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
             {comment?.replyOnUser !== null && (
               <p className="text-gray-900 whitespace-nowrap">
-                En réponse à{" "}
+                En réponse à{' '}
                 <Link
                   to={`/blog/${comment?.post?.slug}/#commentaire-${comment?._id}`}
                   className="text-blue-500"
@@ -131,12 +131,12 @@ const Comments = () => {
           </td>
           <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <p className="text-gray-900 whitespace-nowrap">
-              {new Date(comment?.createdAt).toLocaleDateString("fr-FR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-                hour: "numeric",
-                minute: "numeric",
+              {new Date(comment?.createdAt).toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit',
+                hour: 'numeric',
+                minute: 'numeric',
               })}
             </p>
           </td>
@@ -146,8 +146,8 @@ const Comments = () => {
               type="button"
               className={`${
                 comment?.check
-                  ? "text-yellow-600 hover:text-yellow-900"
-                  : "text-green-600 hover:text-green-900"
+                  ? 'text-yellow-600 hover:text-yellow-900'
+                  : 'text-green-600 hover:text-green-900'
               } disabled:opacity-70 disabled:cursor-not-allowed`}
               onClick={() =>
                 mutateUpdateCommentCheck({
@@ -157,7 +157,7 @@ const Comments = () => {
                 })
               }
             >
-              {comment?.check ? "Rejeter" : "Valider"}
+              {comment?.check ? 'Rejeter' : 'Valider'}
             </button>
             <button
               disabled={isLoadingDeleteData}
@@ -225,7 +225,7 @@ const Comments = () => {
         </tr>
       ))}
     </DataTable>
-  );
-};
+  )
+}
 
-export default Comments;
+export default Comments

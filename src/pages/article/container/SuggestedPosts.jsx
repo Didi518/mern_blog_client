@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-import { images, stables } from "../../../constants";
+import { images } from '../../../constants'
 
 const SuggestedPosts = ({ className, header, posts = [], tags }) => {
   return (
@@ -17,11 +17,7 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
             className="flex space-x-3 flex-nowrap items-center"
           >
             <img
-              src={
-                item?.photo
-                  ? stables.UPLOAD_FOLDER_BASE_URL + item?.photo
-                  : images.samplePostImage
-              }
+              src={item?.photo ? item?.photo : images.samplePostImage}
               alt={item.title}
               className="aspect-square object-cover rounded-lg w-1/5"
             />
@@ -30,10 +26,10 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
                 <Link to={`/blog/${item.slug}`}>{item.title}</Link>
               </h3>
               <span className="text-xs opacity-60">
-                {new Date(item.createdAt).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
+                {new Date(item.createdAt).toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
                 })}
               </span>
             </div>
@@ -59,7 +55,7 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SuggestedPosts;
+export default SuggestedPosts
