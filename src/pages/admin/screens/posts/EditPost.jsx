@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { HiOutlineCamera } from "react-icons/hi";
-import CreatableSelect from "react-select/creatable";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { HiOutlineCamera } from 'react-icons/hi';
+import CreatableSelect from 'react-select/creatable';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getSinglePost, updatePost } from "../../../../services/index/posts";
-import { getAllCategories } from "../../../../services/index/postCategories";
-import { stables } from "../../../../constants";
+import { getSinglePost, updatePost } from '../../../../services/index/posts';
+import { getAllCategories } from '../../../../services/index/postCategories';
 import {
   categoryToOption,
   filterCategories,
-} from "../../../../utils/multiSelectTagsUtils";
-import ArticleDetailSkeleton from "../../../article/components/ArticleDetailsSkeleton";
-import ErrorMessage from "../../../../components/ErrorMessage";
-import Editor from "../../../../components/editor/Editor";
-import MultiSelectTagsDropdown from "../../components/select-dropdown/MultiSelectTagsDropdown";
+} from '../../../../utils/multiSelectTagsUtils';
+import ArticleDetailSkeleton from '../../../article/components/ArticleDetailsSkeleton';
+import ErrorMessage from '../../../../components/ErrorMessage';
+import Editor from '../../../../components/editor/Editor';
+import MultiSelectTagsDropdown from '../../components/select-dropdown/MultiSelectTagsDropdown';
 
 const promiseOptions = async (inputValue) => {
   const { data: categoriesData } = await getAllCategories();
@@ -24,7 +23,7 @@ const promiseOptions = async (inputValue) => {
 };
 
 const removeAccents = (str) => {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 };
 
 const EditPost = () => {
@@ -33,17 +32,17 @@ const EditPost = () => {
   const [initialPhoto, setInitialPhoto] = useState(null);
   const [body, setBody] = useState(null);
   const [categories, setCategories] = useState(null);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [tags, setTags] = useState(null);
   const [postSlug, setPostSlug] = useState(slug);
-  const [caption, setCaption] = useState("");
+  const [caption, setCaption] = useState('');
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
-    queryKey: ["blog", slug],
+    queryKey: ['blog', slug],
   });
 
   const {
@@ -58,7 +57,7 @@ const EditPost = () => {
       });
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["blog", slug]);
+      queryClient.invalidateQueries(['blog', slug]);
       toast.success("L'article a bien été mis à jour");
       navigate(`/admin/articles/gestion/modifier/${data.slug}`, {
         replace: true,
@@ -88,7 +87,7 @@ const EditPost = () => {
     let updatedData = new FormData();
 
     if (!initialPhoto && photo) {
-      updatedData.append("postPicture", photo);
+      updatedData.append('postPicture', photo);
     } else if (initialPhoto && !photo) {
       const urlToObject = async (url) => {
         let response = await fetch(url);
@@ -96,15 +95,13 @@ const EditPost = () => {
         const file = new File([blob], initialPhoto, { type: blob.type });
         return file;
       };
-      const picture = await urlToObject(
-        stables.UPLOAD_FOLDER_BASE_URL + data?.photo
-      );
+      const picture = await urlToObject(data?.photo);
 
-      updatedData.append("postPicture", picture);
+      updatedData.append('postPicture', picture);
     }
 
     updatedData.append(
-      "document",
+      'document',
       JSON.stringify({ body, categories, title, tags, slug: postSlug, caption })
     );
 
@@ -126,9 +123,9 @@ const EditPost = () => {
     const value = e.target.value;
     const slug = removeAccents(value)
       .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "")
-      .replace(/--+/g, "-");
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/--+/g, '-');
 
     setPostSlug(slug);
   };
@@ -153,7 +150,7 @@ const EditPost = () => {
                 />
               ) : initialPhoto ? (
                 <img
-                  src={stables.UPLOAD_FOLDER_BASE_URL + data?.photo}
+                  src={data?.photo}
                   alt={data?.title}
                   className="rounded-xl w-full"
                 />
@@ -208,7 +205,7 @@ const EditPost = () => {
                 value={caption}
                 className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
                 onChange={(e) => setCaption(e.target.value)}
-                placeholder={data?.caption ? data.caption : "Légende"}
+                placeholder={data?.caption ? data.caption : 'Légende'}
               />
             </div>
             <div className="d-form-control w-full">
@@ -249,7 +246,7 @@ const EditPost = () => {
                   }))}
                   placeholder="Sélectionnez un ou plusieurs tags"
                   noOptionsMessage={() => {
-                    return "Aucun tag disponible";
+                    return 'Aucun tag disponible';
                   }}
                   formatCreateLabel={(inputValue) => `Ajoutez ${inputValue}`}
                   isMulti

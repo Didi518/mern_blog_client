@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import { HiOutlineCamera } from "react-icons/hi";
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { createPortal } from 'react-dom';
+import { HiOutlineCamera } from 'react-icons/hi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { userActions } from "../store/reducers/userReducers";
-import { updateProfilePicture } from "../services/index/users";
-import { stables } from "../constants";
-import CropEasy from "./crop/CropEasy";
+import { userActions } from '../store/reducers/userReducers';
+import {
+  updateProfilePicture,
+  deleteProfilePicture,
+} from '../services/index/users';
+
+import CropEasy from './crop/CropEasy';
 
 const ProfilePicture = ({ avatar }) => {
   const [openCrop, setOpenCrop] = useState(false);
@@ -17,19 +20,31 @@ const ProfilePicture = ({ avatar }) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  useMutation({
     mutationFn: ({ token, formData }) => {
-      return updateProfilePicture({
-        token: token,
-        formData: formData,
-      });
+      return updateProfilePicture({ token, formData });
     },
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       setOpenCrop(false);
-      localStorage.setItem("compte", JSON.stringify(data));
-      queryClient.invalidateQueries(["profile"]);
-      toast.success("La photo de profil a bien été supprimée");
+      localStorage.setItem('compte', JSON.stringify(data));
+      queryClient.invalidateQueries(['profile']);
+      toast.success('Photo de profil mise à jour !');
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.error(error);
+    },
+  });
+
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: (token) => {
+      return deleteProfilePicture(token);
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      queryClient.invalidateQueries(['profile']);
+      toast.success('Photo de profil supprimée !');
     },
     onError: (error) => {
       toast.error(error.message);
@@ -39,21 +54,15 @@ const ProfilePicture = ({ avatar }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setPhoto({ url: URL.createObjectURL(file), file });
-    setOpenCrop(true);
+    if (file) {
+      setPhoto({ url: URL.createObjectURL(file), file });
+      setOpenCrop(true);
+    }
   };
 
   const handleDeleteImage = () => {
-    if (window.confirm("Voulez-vous supprimer l'image de profil?")) {
-      try {
-        const formData = new FormData();
-        formData.append("profilePicture", undefined);
-
-        mutate({ token: userState.userInfo.token, formData: formData });
-      } catch (error) {
-        toast.error(error.message);
-        console.log(error);
-      }
+    if (window.confirm("Voulez-vous supprimer l'image de profil ?")) {
+      deleteMutate(userState.userInfo.token);
     }
   };
 
@@ -62,7 +71,7 @@ const ProfilePicture = ({ avatar }) => {
       {openCrop &&
         createPortal(
           <CropEasy photo={photo} setOpenCrop={setOpenCrop} />,
-          document.getElementById("portal")
+          document.getElementById('portal')
         )}
       <div className="w-full flex items-center gap-x-4">
         <div className="relative w-20 h-20 rounded-full outline outline-offset-2 outline-1 outline-primary overflow-hidden">
@@ -72,7 +81,7 @@ const ProfilePicture = ({ avatar }) => {
           >
             {avatar ? (
               <img
-                src={stables.UPLOAD_FOLDER_BASE_URL + avatar}
+                src={avatar}
                 alt="avatar"
                 className="w-full h-full object-cover"
               />

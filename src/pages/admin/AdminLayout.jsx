@@ -1,11 +1,12 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-import { getUserProfile } from "../../services/index/users";
-import Header from "./components/header/Header";
+import { getUserProfile } from '../../services/index/users';
+
+import Header from './components/header/Header';
 
 const AdminLayout = () => {
   const userState = useSelector((state) => state.user);
@@ -15,18 +16,18 @@ const AdminLayout = () => {
     queryFn: () => {
       return getUserProfile({ token: userState.userInfo.token });
     },
-    queryKey: ["profile"],
+    queryKey: ['profile'],
     onError: (_err) => {
-      navigate("/");
-      toast.error("Permission refusée, réservé aux admins");
+      navigate('/');
+      toast.error('Permission refusée, réservé aux admins');
     },
   });
 
   useEffect(() => {
     if (profileData) {
       if (!profileData.admin) {
-        navigate("/");
-        toast.error("Permission refusée, réservé aux admins");
+        navigate('/');
+        toast.error('Permission refusée, réservé aux admins');
       }
     }
   });
