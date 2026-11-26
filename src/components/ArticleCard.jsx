@@ -34,22 +34,22 @@ const ArticleCard = ({ post, className }) => {
             />
             <div className="flex flex-col">
               <h4 className="font-bold italic text-dark-soft text-sm md:text-base">
-                {post.user.name}
+                {post?.user?.name || "Auteur inconnu"}
               </h4>
               <div className="flex items-center gap-x-2">
                 <span
                   className={`${
-                    post.user.verified ? 'bg-[#36b37e]' : 'bg-red-500'
+                    post?.user?.verified ? 'bg-[#36b37e]' : 'bg-red-500'
                   }  w-fit bg-opacity-20 p-1.5 rounded-full`}
                 >
-                  {post.user.verified ? (
+                  {post?.user?.verified ? (
                     <BsCheckLg className="w-1.5 h-1.5 text-[#36b37e]" />
                   ) : (
                     <AiOutlineClose className="w-1.5 h-1.5 text-red-500" />
                   )}
                 </span>
                 <span className="italic text-dark-light text-xs md:text-sm">
-                  Auteur {post.user.verified ? 'vérifié' : 'non-vérifié'}
+                  Auteur {post?.user?.verified ? 'vérifié' : 'non-vérifié'}
                 </span>
               </div>
             </div>
